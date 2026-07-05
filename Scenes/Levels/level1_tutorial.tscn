@@ -6,10 +6,18 @@
 [ext_resource type="PackedScene" uid="uid://r7hftsak24ry" path="res://Scenes/Props/door.tscn" id="6_mjcty"]
 [ext_resource type="PackedScene" uid="uid://dqi2b8x4bhwer" path="res://Scenes/Props/button.tscn" id="7_wfpdi"]
 [ext_resource type="PackedScene" uid="uid://dqi2b8x4bhgtk" path="res://Scenes/Props/pressure_plate.tscn" id="9_wfpdi"]
+[ext_resource type="PackedScene" uid="uid://dvgfboeto8y75" path="res://Scenes/Props/moving_platform_button_controlled.tscn" id="10_cfpxw"]
 [ext_resource type="PackedScene" uid="uid://b1n3kruxhwkje" path="res://Scenes/Props/message_bubble.tscn" id="10_iukr2"]
 [ext_resource type="Script" uid="uid://c25w5dbgbmwis" path="res://Scripts/Dialogue/dialogue_manager.gd" id="11_5lneo"]
 [ext_resource type="Script" uid="uid://btqetnj6xow5g" path="res://Scripts/Dialogue/dialogue_trigger.gd" id="11_jfqkh"]
+[ext_resource type="PackedScene" uid="uid://bnvfn40klfk7n" path="res://Scenes/Props/moving_platform.tscn" id="11_yt7f8"]
 [ext_resource type="Script" uid="uid://byu6kr7gy1tuk" path="res://Scripts/Dialogue/dialogue_script_generator.gd" id="13_snyua"]
+
+[sub_resource type="Curve2D" id="Curve2D_cfpxw"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 2, -196, 0, 0, 0, 0, 2, 4)
+}
+point_count = 2
 
 [node name="GameScene" type="Node2D" unique_id=840575024]
 script = ExtResource("1_cfpxw")
@@ -51,4 +59,17 @@ collision_mask = 3
 script = ExtResource("11_jfqkh")
 dialogue_label = "PDX5R8HZ"
 
+[node name="Path2D" parent="." unique_id=1707813698 instance=ExtResource("10_cfpxw")]
+position = Vector2(765, 210)
+curve = SubResource("Curve2D_cfpxw")
+
+[node name="Path2D2" parent="." unique_id=933797190 instance=ExtResource("11_yt7f8")]
+position = Vector2(760, 127)
+scale = Vector2(0.8181818, 1)
+loop = false
+
 [connection signal="pressed" from="PressurePlate" to="Door" method="open"]
+[connection signal="body_entered" from="Button" to="Player" method="_on_button_body_entered"]
+[connection signal="body_entered" from="Button" to="Path2D" method="_on_button_body_entered"]
+[connection signal="pressed" from="Button" to="Door" method="open"]
+[connection signal="pressed" from="Button" to="Path2D" method="_on_button_pressed"]
